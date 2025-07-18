@@ -8,31 +8,22 @@
     <link rel="stylesheet" href="TemplateData/style.css">
 </head>
   <body>
+      <!-- Loading Animation -->
+    <div id="loading-screen">
+    <div id="logo-container">
+    </div>
+  </div>
       <div id="unity-container" class="unity-desktop" style="width: 100%; height: 100%; background-color: darkgray!important">
-          <canvas id="unity-canvas" width="auto" height="auto" tabindex="-1"></canvas>
-          <div id="unity-loading-bar">
-              <div id="unity-logo"></div>
-              <div id="unity-progress-bar-empty">
-                  <div id="unity-progress-bar-full"></div>
-              </div>
-          </div>
-          
-          <div id="unity-warning"> </div>
-         <!-- <button id="screenshot" type="button">Save...</button>-->
-          <!-- <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Bop'nBounce</div>
-    </div>-->
+          <canvas id="unity-canvas" width="auto" height="auto" tabindex="-1"></canvas>                    
+          <div id="unity-warning"> </div>        
       </div>
       <script>
 
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var warningBanner = document.querySelector("#unity-warning");
+    var loadingScreen = document.getElementById('loading-screen');
+
 
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
@@ -59,11 +50,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/BnB_15_DemoUpdate.loader.js";
+      var loaderUrl = buildUrl + "/BnB_16_Loading.loader.js";
       var config = {
-        dataUrl: buildUrl + "/BnB_15_DemoUpdate.data",
-        frameworkUrl: buildUrl + "/BnB_15_DemoUpdate.framework.js",
-        codeUrl: buildUrl + "/BnB_15_DemoUpdate.wasm",
+        dataUrl: buildUrl + "/BnB_16_Loading.data",
+        frameworkUrl: buildUrl + "/BnB_16_Loading.framework.js",
+        codeUrl: buildUrl + "/BnB_16_Loading.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "darjeelingdesignco.",
         productName: "Bop'nBounce",
@@ -100,24 +91,49 @@
           canvas.style.height = "100%";
       }
 
-      loadingBar.style.display = "block";
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-            window.unityInstance = unityInstance;
-                loadingBar.style.display = "none";
-                /*fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };*/
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-      document.body.appendChild(script);
+    var unityLoaded = false;
+    var animationCompleted = false;
+
+    // Wait for both the loading animation and Unity to finish
+    function checkIfReady() {
+      if (unityLoaded && animationCompleted) {
+        // Both have completed, show Unity content
+        setTimeout(() => {
+          loadingScreen.style.opacity = '0';
+          loadingScreen.style.transition = 'opacity 0.5s ease-out';
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            container.style.display = 'block'; // Reveal Unity content
+          }, 500);
+        }, 500);  // Delay for a smooth transition
+      }
+    }
+
+    // Handle Unity loading
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = () => {
+      createUnityInstance(document.querySelector("#unity-canvas"), config, (progress) => {
+        // Optionally handle Unity loading progress here
+      }).then((unityInstance) => {
+        window.unityInstance = unityInstance;
+        unityLoaded = true;
+        checkIfReady();  // Check if both Unity and animation are complete
+      }).catch((message) => {
+        alert(message);
+      });
+    };
+    document.body.appendChild(script);
+
+    // Handle loading animation (logo reveal)
+    window.addEventListener('load', function () {
+      // Wait for animation to complete (example: after 3 seconds)
+      setTimeout(function () {
+        animationCompleted = true;
+        checkIfReady();  // Check if both Unity and animation are complete
+      }, 3000);  // Adjust duration based on the logo animation time
+    });
 
       </script>
   </body>
