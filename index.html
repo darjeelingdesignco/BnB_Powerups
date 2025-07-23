@@ -11,6 +11,7 @@
       <!-- Loading Animation -->
     <div id="loading-screen">
     <div id="logo-container">
+      <div id="logo-overlay"></div>
     </div>
   </div>
       <div id="unity-container" class="unity-desktop" style="width: 100%; height: 100%; background-color: darkgray!important">
@@ -50,11 +51,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/BnB_16_Loading.loader.js";
+      var loaderUrl = buildUrl + "/BnB_17_NewLoading.loader.js";
       var config = {
-        dataUrl: buildUrl + "/BnB_16_Loading.data",
-        frameworkUrl: buildUrl + "/BnB_16_Loading.framework.js",
-        codeUrl: buildUrl + "/BnB_16_Loading.wasm",
+        dataUrl: buildUrl + "/BnB_17_NewLoading.data",
+        frameworkUrl: buildUrl + "/BnB_17_NewLoading.framework.js",
+        codeUrl: buildUrl + "/BnB_17_NewLoading.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "darjeelingdesignco.",
         productName: "Bop'nBounce",
@@ -93,47 +94,36 @@
 
 
     var unityLoaded = false;
-    var animationCompleted = false;
 
-    // Wait for both the loading animation and Unity to finish
-    function checkIfReady() {
-      if (unityLoaded && animationCompleted) {
-        // Both have completed, show Unity content
+    // Handle Unity loading
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+
+    script.onload = () => {
+      createUnityInstance(canvas, config, (progress) => {
+        // Progress goes from 0 to 1
+        const overlay = document.getElementById('logo-overlay');
+        if (overlay) {
+          overlay.style.transform = `translateX(${progress * 100}%)`;
+        }
+      }).then((unityInstance) => {
+        window.unityInstance = unityInstance;
+        unityLoaded = true;
+
+        // Once Unity is fully loaded, fade out loading screen
         setTimeout(() => {
           loadingScreen.style.opacity = '0';
           loadingScreen.style.transition = 'opacity 0.5s ease-out';
           setTimeout(() => {
             loadingScreen.style.display = 'none';
-            container.style.display = 'block'; // Reveal Unity content
+            container.style.display = 'block';
           }, 500);
-        }, 500);  // Delay for a smooth transition
-      }
-    }
-
-    // Handle Unity loading
-    var script = document.createElement("script");
-    script.src = loaderUrl;
-    script.onload = () => {
-      createUnityInstance(document.querySelector("#unity-canvas"), config, (progress) => {
-        // Optionally handle Unity loading progress here
-      }).then((unityInstance) => {
-        window.unityInstance = unityInstance;
-        unityLoaded = true;
-        checkIfReady();  // Check if both Unity and animation are complete
+        }, 500);
       }).catch((message) => {
         alert(message);
       });
     };
     document.body.appendChild(script);
-
-    // Handle loading animation (logo reveal)
-    window.addEventListener('load', function () {
-      // Wait for animation to complete (example: after 3 seconds)
-      setTimeout(function () {
-        animationCompleted = true;
-        checkIfReady();  // Check if both Unity and animation are complete
-      }, 3000);  // Adjust duration based on the logo animation time
-    });
 
       </script>
   </body>
