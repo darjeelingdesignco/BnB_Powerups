@@ -19,9 +19,11 @@
         </div>
     </div>
 
-    <div id="unity-container" class="unity-desktop">
-        <canvas id="unity-canvas" tabindex="-1"></canvas>
-        <div id="unity-warning"></div>
+    <div id="unity-wrapper">
+        <div id="unity-container">
+            <canvas id="unity-canvas" tabindex="-1"></canvas>
+            <div id="unity-warning"></div>
+        </div>
     </div>
 
     <script>
@@ -55,11 +57,11 @@
         }
 
         const buildUrl = "Build";
-        const loaderUrl = buildUrl + "/BnB_F.loader.js";
+        const loaderUrl = buildUrl + "/BnB_F_2.loader.js";
         const config = {
-            dataUrl: buildUrl + "/BnB_F.data",
-            frameworkUrl: buildUrl + "/BnB_F.framework.js",
-            codeUrl: buildUrl + "/BnB_F.wasm",
+            dataUrl: buildUrl + "/BnB_F_2.data",
+            frameworkUrl: buildUrl + "/BnB_F_2.framework.js",
+            codeUrl: buildUrl + "/BnB_F_2.wasm",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "darjeelingdesignco.",
             productName: "Bop'nBounce",
