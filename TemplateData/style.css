@@ -54,8 +54,6 @@ body {
     background: black;
     z-index: 1;
     transform-origin: center center;
-    background-color: rgba(0, 0, 255, 0.2); /* transparent blue */
-    outline: 2px solid red;
 }
 
 #unity-canvas {
@@ -76,19 +74,45 @@ body {
     z-index: 99999;
 }
 
-@media screen and (orientation: portrait) {
-    #unity-container {
-        transform: translate(-50%, -50%) rotate(90deg);
-        width: 100vh;
-        height: 100vw;
-        top: 50%;
-        left: 50%;
-        position: fixed;
-        transform-origin: center center;
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  #rotateDeviceMessage {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    font-size: 2em;
+    font-family: 'Nunito', sans-serif; /* 👈 Nunito font applied here */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media screen and (orientation: portrait) {
+    #unityContainer {
+      display: none;
     }
 
-    #unity-canvas {
-        width: 100vh;
-        height: 100vw;
+    #rotateDeviceMessage {
+      display: flex;
     }
-}
+  }
+
+  @media screen and (orientation: landscape) {
+    #unityContainer {
+      display: block;
+    }
+
+    #rotateDeviceMessage {
+      display: none;
+    }
+  }
