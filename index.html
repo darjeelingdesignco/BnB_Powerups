@@ -32,16 +32,21 @@
             transform-origin: center center;
         }
 
+        #unity-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
         /* Auto-rotate on portrait mode using CSS */
         @media screen and (orientation: portrait) {
             #unity-container {
-                transform: rotate(90deg);
+                transform: rotate(90deg) scale(calc(100vh / 100vw));
                 width: 100vh;
                 height: 100vw;
                 top: 50%;
                 left: 50%;
                 transform-origin: center center;
-                transform: translate(-50%, -50%) rotate(90deg);
             }
         }
     </style>
