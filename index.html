@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Bop'nBounce</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
@@ -14,6 +16,8 @@
             padding: 0;
             overflow: hidden;
             background-color: black;
+            height: 100%;
+            width: 100%;
         }
 
         #unityContainer {
@@ -24,18 +28,20 @@
             height: 100vh;
             background: black;
             z-index: 1;
+            transform: none;
+            transform-origin: center center;
         }
 
         /* Auto-rotate on portrait mode using CSS */
         @media screen and (orientation: portrait) {
             #unityContainer {
                 transform: rotate(90deg);
-                transform-origin: center center;
                 width: 100vh;
                 height: 100vw;
-                position: absolute;
-                top: 0;
-                left: 0;
+                top: 50%;
+                left: 50%;
+                transform-origin: center center;
+                transform: translate(-50%, -50%) rotate(90deg);
             }
         }
     </style>
