@@ -54,6 +54,8 @@ body {
     background: black;
     z-index: 1;
     transform-origin: center center;
+    background-color: rgba(0, 0, 255, 0.2); /* transparent blue */
+    outline: 2px solid red;
 }
 
 #unity-canvas {

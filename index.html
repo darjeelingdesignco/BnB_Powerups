@@ -71,42 +71,47 @@
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
-            const targetAspect = 16 / 9; // 🔁 Change this if your game uses a different aspect
+            const targetAspect = 16 / 9; // 🎯 Unity game aspect ratio
+            const screenW = window.innerWidth;
+            const screenH = window.innerHeight;
 
             if (isMobile && isPortrait) {
-                const screenW = window.innerHeight; // Height becomes width due to rotation
-                const screenH = window.innerWidth;
+                // We're rotating the canvas, so we flip screen width & height
+                const rotatedWidth = screenH;
+                const rotatedHeight = screenW;
 
-                let scaledWidth = screenW;
-                let scaledHeight = screenW / targetAspect;
+                // Maintain aspect ratio within the rotated screen
+                let finalWidth = rotatedWidth;
+                let finalHeight = rotatedWidth / targetAspect;
 
-                if (scaledHeight > screenH) {
-                    scaledHeight = screenH;
-                    scaledWidth = screenH * targetAspect;
+                if (finalHeight > rotatedHeight) {
+                    finalHeight = rotatedHeight;
+                    finalWidth = rotatedHeight * targetAspect;
                 }
 
                 container.style.position = "fixed";
                 container.style.top = "50%";
                 container.style.left = "50%";
-                container.style.width = `${scaledWidth}px`;
-                container.style.height = `${scaledHeight}px`;
                 container.style.transform = "translate(-50%, -50%) rotate(90deg)";
                 container.style.transformOrigin = "center center";
+                container.style.width = finalWidth + "px";
+                container.style.height = finalHeight + "px";
 
                 canvas.style.width = "100%";
                 canvas.style.height = "100%";
             } else {
+                // Normal (landscape or desktop)
                 container.style.transform = "none";
-                container.style.width = "100vw";
-                container.style.height = "100vh";
+                container.style.position = "fixed";
                 container.style.top = "0";
                 container.style.left = "0";
+                container.style.width = "100vw";
+                container.style.height = "100vh";
 
                 canvas.style.width = "100%";
                 canvas.style.height = "100%";
             }
         }
-
 
         window.addEventListener('resize', adjustCanvasForOrientation);
         window.addEventListener('orientationchange', adjustCanvasForOrientation);
