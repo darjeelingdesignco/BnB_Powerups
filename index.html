@@ -29,6 +29,29 @@
         Please rotate your device.
     </div>
     <script>
+        function resizeUnityCanvas() {
+            const gameContainer = document.getElementById('unity-container'); // or your canvas wrapper
+            const unityCanvas = document.getElementById('unity-canvas');
+
+            // Get actual visible height excluding browser UI
+            const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+
+            // Apply to container and canvas
+            gameContainer.style.width = vw + 'px';
+            gameContainer.style.height = vh + 'px';
+            unityCanvas.style.width = vw + 'px';
+            unityCanvas.style.height = vh + 'px';
+        }
+
+        window.addEventListener('resize', resizeUnityCanvas);
+        window.addEventListener('orientationchange', () => {
+            // Delay resize until browser finishes adjusting bars
+            setTimeout(resizeUnityCanvas, 500);
+        });
+
+        window.addEventListener('load', resizeUnityCanvas);
+
         const container = document.getElementById("unity-container");
         const canvas = document.getElementById("unity-canvas");
         const warningBanner = document.getElementById("unity-warning");
