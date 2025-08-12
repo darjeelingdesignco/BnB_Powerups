@@ -35,7 +35,11 @@
         var unityInstance = null;
 
         function isMobileDevice() {
-            return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+            return (
+                /Android|iPhone|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent) ||
+                (navigator.userAgent.includes("iPad")) ||
+                (navigator.maxTouchPoints && navigator.maxTouchPoints > 1 && /Macintosh/i.test(navigator.userAgent))
+            );
         }
 
         function ShowMobileKeyboard(gameObjectName, methodName, x, y, width, height) {
