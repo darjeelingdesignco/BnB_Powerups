@@ -43,27 +43,38 @@
         }
 
         function ShowMobileKeyboard(gameObjectName, methodName, x, y, width, height) {
-            if (!isMobileDevice()) return; // Only trigger on mobile
+    if (!isMobileDevice()) return;
 
-            const input = document.getElementById('mobileInput');
-            input.style.left = x + 'px';
-            input.style.top = y + 'px';
-            input.style.width = width + 'px';
-            input.style.height = height + 'px';
-            input.value = '';
-            input.style.display = 'block';
-            input.focus();
+    const input = document.getElementById('mobileInput');
+    input.style.left = x + 'px';
+    input.style.top = y + 'px';
+    input.style.width = width + 'px';
+    input.style.height = height + 'px';
+    input.value = '';
+    input.style.display = 'block';
+    input.focus();
 
-            // Send value on every change
-            input.oninput = () => {
-                unityInstance.SendMessage(gameObjectName, methodName, input.value);
-            };
+    // Send value on every change
+    input.oninput = () => {
+        unityInstance.SendMessage(gameObjectName, methodName, input.value);
+    };
 
-            // Hide on blur
-            input.onblur = () => {
-                input.style.display = 'none';
-            };
+    // Close keyboard if clicking outside (iPad fix)
+    const outsideHandler = (event) => {
+        if (event.target !== input) {
+            input.blur();
+            document.removeEventListener('touchstart', outsideHandler);
+            document.removeEventListener('mousedown', outsideHandler);
         }
+    };
+    document.addEventListener('touchstart', outsideHandler);
+    document.addEventListener('mousedown', outsideHandler);
+
+    // Hide on blur
+    input.onblur = () => {
+        input.style.display = 'none';
+    };
+}
     </script>
 
     <script>
